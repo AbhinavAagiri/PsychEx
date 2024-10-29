@@ -1,0 +1,10 @@
+{
+    "rewrites": [
+      { "source": "/AddictionArticle", "destination": "/Output/AddictionArticle.html" },
+      { "source": "/SocialInfluences", "destination": "/Output/SocialInfluences.html" },
+      { "source": "/impactOfTechnology", "destination": "/Output/impactOfTechnology.html" },
+      { "source": "/ChildhoodExperiences", "destination": "/Output/ChildhoodExperiences.html" },
+      { "source": "/TypesOfMotivation", "destination": "/Output/TypesOfMotivation.html" },
+      { "source": "/our-team", "destination": "/Output/our-team.html" }
+    ]
+  }
