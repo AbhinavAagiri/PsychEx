@@ -1,0 +1,477 @@
+@import "tailwindcss";
+
+@theme {
+  --color-paper: #f3f0f4;
+  --color-paper-raised: #fcfbfd;
+  --color-ink: #17102a;
+  --color-ink-soft: #56496a;
+  --color-plum: #5c1f7a;
+  --color-poppy: #e8481f;
+  --color-pollen: #f0be4b;
+  --color-line: #d8d2df;
+
+  --font-display: var(--font-bricolage), "Helvetica Neue", Arial, sans-serif;
+  --font-serif: var(--font-newsreader), Georgia, serif;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /* Lenis smooth scrolling — the library adds these classes at runtime. */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+
+  .lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-serif);
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    font-optical-sizing: auto;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: var(--color-poppy);
+    color: #fff8f4;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-poppy);
+    outline-offset: 3px;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Paper grain: a single quiet texture over the whole page. */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    pointer-events: none;
+    opacity: 0.04;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  main {
+    animation: page-fade 360ms var(--ease-out-expo) both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-delay: 0ms !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+}
+
+@layer components {
+  .font-display {
+    font-family: var(--font-display);
+  }
+
+  .ui {
+    font-family: var(--font-display);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(2.85rem, 8.2vw, 7.4rem);
+    line-height: 0.94;
+    letter-spacing: -0.045em;
+    font-variation-settings: "wdth" 96;
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(1.85rem, 3.7vw, 3rem);
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+  }
+
+  .article-title {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: clamp(2.05rem, 4.5vw, 3.5rem);
+    line-height: 1.05;
+    letter-spacing: -0.022em;
+  }
+
+  .lead {
+    font-size: clamp(1.075rem, 1.35vw, 1.25rem);
+    line-height: 1.6;
+    color: var(--color-ink-soft);
+  }
+
+  .line-mask {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.14em;
+    margin-bottom: -0.14em;
+  }
+
+  .line-inner {
+    display: block;
+    animation: line-rise 1s var(--ease-out-expo) both;
+    animation-delay: var(--delay, 0ms);
+  }
+
+  /* Inline text links draw their underline in from the left. */
+  .link {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-repeat: no-repeat;
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    padding-bottom: 2px;
+    transition:
+      background-size 0.45s var(--ease-out-expo),
+      color 0.2s ease;
+  }
+
+  .link:hover,
+  .link:focus-visible {
+    background-size: 100% 1px;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    font-family: var(--font-display);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    padding: 0.9rem 1.35rem;
+    border-radius: 2px;
+    color: #fdfaff;
+    background: var(--color-ink);
+    transition:
+      background-color 0.35s var(--ease-out-expo),
+      color 0.35s var(--ease-out-expo),
+      transform 0.35s var(--ease-out-expo);
+  }
+
+  .btn svg {
+    transition: transform 0.4s var(--ease-out-expo);
+  }
+
+  .btn:hover {
+    background: var(--color-poppy);
+    color: #fff8f4;
+    transform: translateY(-2px);
+  }
+
+  .btn:hover svg {
+    transform: translate(2px, -2px);
+  }
+
+  .btn-quiet {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-display);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--color-ink);
+    border-bottom: 1px solid var(--color-ink);
+    padding-bottom: 4px;
+    transition: color 0.25s ease, border-color 0.25s ease, gap 0.3s var(--ease-out-expo);
+  }
+
+  .btn-quiet:hover {
+    color: var(--color-plum);
+    border-color: var(--color-plum);
+    gap: 0.8rem;
+  }
+
+  /* Article rows in the index */
+  .article-row {
+    position: relative;
+    isolation: isolate;
+    border-top: 1px solid var(--color-line);
+    transition: border-color 0.4s ease;
+  }
+
+  .article-row::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--color-paper-raised);
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 0.5s var(--ease-out-expo);
+  }
+
+  .article-row:hover::before,
+  .article-row:focus-within::before {
+    transform: scaleY(1);
+  }
+
+  .article-row .row-title {
+    transition: transform 0.5s var(--ease-out-expo), color 0.3s ease;
+  }
+
+  .article-row:hover .row-title,
+  .article-row:focus-within .row-title {
+    transform: translateX(0.35rem);
+    color: var(--color-plum);
+  }
+
+  .article-row .row-arrow {
+    opacity: 0;
+    transform: translate(-6px, 6px);
+    transition: opacity 0.35s ease, transform 0.45s var(--ease-out-expo);
+  }
+
+  .article-row:hover .row-arrow,
+  .article-row:focus-within .row-arrow {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+
+  .article-body {
+    font-size: 1.0875rem;
+    line-height: 1.78;
+    color: var(--color-ink);
+  }
+
+  .article-body p + p {
+    margin-top: 1.15em;
+  }
+
+  .article-body section + section {
+    margin-top: 3.25rem;
+  }
+
+  .article-body h2 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(1.35rem, 2vw, 1.6rem);
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+    margin-bottom: 1rem;
+    display: flex;
+    gap: 0.7rem;
+    align-items: baseline;
+  }
+
+  .article-body h2::before {
+    content: "";
+    flex: none;
+    width: 0.5rem;
+    height: 0.5rem;
+    background: var(--color-poppy);
+    transform: translateY(-0.1rem);
+  }
+
+  .article-body h3 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.1rem;
+    letter-spacing: -0.01em;
+    margin: 2rem 0 0.75rem;
+    color: var(--color-plum);
+  }
+
+  .article-body ul {
+    margin: 1.35rem 0;
+    display: grid;
+    gap: 0.85rem;
+  }
+
+  .article-body li {
+    position: relative;
+    padding-left: 1.35rem;
+    list-style: none;
+  }
+
+  .article-body li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.72em;
+    width: 0.42rem;
+    height: 1px;
+    background: var(--color-poppy);
+  }
+
+  .article-body li strong {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.95em;
+    letter-spacing: -0.005em;
+  }
+
+  .article-body .first-p {
+    font-size: 1.2rem;
+    line-height: 1.65;
+  }
+
+  .refs {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--color-ink-soft);
+    font-family: var(--font-display);
+  }
+
+  .refs li {
+    padding-left: 1.15rem;
+    position: relative;
+    margin-top: 0.55rem;
+  }
+
+  .refs li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.65em;
+    width: 6px;
+    height: 1px;
+    background: var(--color-line);
+  }
+
+  .article-body .refs {
+    display: block;
+    margin: 1.1rem 0 0;
+  }
+
+  .figure-frame {
+    position: relative;
+    border: 1px solid var(--color-line);
+    background: var(--color-paper-raised);
+  }
+
+  .corner {
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    border: 1px solid var(--color-ink);
+  }
+
+  /* Scroll reveal — only armed once JS is running, so content still
+     shows if scripts fail. Variants let different kinds of blocks arrive
+     from their own direction rather than every section doing the same lift. */
+  html.js [data-reveal] {
+    opacity: 0;
+    transition:
+      opacity 0.85s var(--ease-out-expo),
+      transform 0.85s var(--ease-out-expo);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+
+  html.js [data-reveal][data-variant="up"] {
+    transform: translate3d(0, 22px, 0);
+  }
+
+  html.js [data-reveal][data-variant="left"] {
+    transform: translate3d(-24px, 0, 0);
+  }
+
+  html.js [data-reveal][data-variant="scale"] {
+    transform: scale(0.985);
+  }
+
+  html.js [data-reveal][data-variant="fade"] {
+    transform: none;
+  }
+
+  html.js [data-reveal][data-visible="true"] {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html.js [data-reveal] {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+@keyframes line-rise {
+  from {
+    transform: translateY(105%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes page-fade {
+  from {
+    opacity: 0.45;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes draw-line {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .illusion-line {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: draw-line 900ms var(--ease-out-expo) forwards;
+    animation-delay: var(--draw-delay, 0ms);
+  }
+}
+
+@keyframes soft-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
